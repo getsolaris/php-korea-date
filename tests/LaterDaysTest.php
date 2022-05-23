@@ -127,4 +127,20 @@ class LaterDaysTest extends TestCase
         $result = KoreaDate::calc($later, $now);
         $this->assertEquals($randomMonth . KoreaDateEnum::NUMBER_MONTH_LATER, $result);
     }
+
+    /**
+     * @return void
+     * @throws Exception
+     * @throws DateValidateException
+     */
+    public function test_랜덤_n년후(): void
+    {
+        $randomYear = random_int(1, 50);
+
+        $now = new DateTime();
+        $later = date_create($randomYear . ' years');
+
+        $result = KoreaDate::calc($later, $now);
+        $this->assertEquals($randomYear . KoreaDateEnum::NUMBER_YEAR_LATER, $result);
+    }
 }

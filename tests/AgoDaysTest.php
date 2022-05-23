@@ -134,7 +134,7 @@ class AgoDaysTest extends TestCase
      */
     public function test_랜덤_n달전()
     {
-        $randomMonth = random_int(2, 12);
+        $randomMonth = random_int(2, 11);
 
         $now = new DateTime();
         $ago = date_create($randomMonth . ' months ago');
@@ -142,5 +142,22 @@ class AgoDaysTest extends TestCase
         $result = KoreaDate::calc($ago, $now);
 
         $this->assertEquals($randomMonth . KoreaDateEnum::NUMBER_MONTH_AGO, $result);
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     * @throws DateValidateException
+     */
+    public function test_랜덤_n년전()
+    {
+        $randomYear = random_int(1, 50);
+
+        $now = new DateTime();
+        $ago = date_create($randomYear . ' years ago');
+
+        $result = KoreaDate::calc($ago, $now);
+
+        $this->assertEquals($randomYear . KoreaDateEnum::NUMBER_YEAR_AGO, $result);
     }
 }
