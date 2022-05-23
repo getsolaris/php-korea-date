@@ -46,7 +46,10 @@ composer require getsolaris/korea-date
 ```php 
 <?php 
 
-$message = calc('2022-05-20', date());
+$agoDate = new DateTime('2022-02-20');
+$diffMessage = KoreaDate::calc($agoDate, '2022-05-20');
+
+echo $diffMessage; // 3달 전
 ```
 
 ## 사용법
