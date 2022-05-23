@@ -1,0 +1,19 @@
+{
+    "name": "getsolaris/korea-date",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Getsolaris\\KoreaDate\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "getsolaris",
+            "email": "im@getsolaris.kr"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
