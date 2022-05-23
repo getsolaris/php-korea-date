@@ -14,8 +14,9 @@ abstract class KoreaDateEnum
         self::INVERT_TYPE_LATER,
     ];
 
+    public const TYPE_TODAY = 'today';
     public const TYPE_MINUTE = 'minute';
-    public const TYPE_HOUR = 'time';
+    public const TYPE_HOUR = 'hour';
     public const TYPE_DAY = 'day';
     public const TYPE_MONTH = 'month';
     public const TYPE_YEAR = 'year';
@@ -62,7 +63,7 @@ abstract class KoreaDateEnum
     ];
 
     /**
-     * @param $type $select
+     * @param string $type
      * @return int
      */
     public static function getTypeOfDaysCount(string $type = self::INVERT_TYPE_AGO): int
@@ -74,7 +75,7 @@ abstract class KoreaDateEnum
      * @param \DateInterval $interval
      * @return string
      */
-    public static function getDayOfMonthOrYear(\DateInterval $interval): string
+    public static function getDayOfType(\DateInterval $interval): string
     {
         $days = $interval->days;
         if (! $days && $interval->i && $interval->i >= 1 && $interval->i < 60) {
@@ -82,7 +83,7 @@ abstract class KoreaDateEnum
         } elseif (! $days && $interval->h && $interval->h >= 1 && $interval->h < 24) {
             return self::TYPE_HOUR;
         } elseif ($days < 32) {
-            return self::TYPE_DAY;
+            return $days ? self::TYPE_DAY : self::TYPE_TODAY;
         } elseif ($days <= 364) {
             return self::TYPE_MONTH;
         }
