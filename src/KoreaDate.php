@@ -10,6 +10,11 @@ use Getsolaris\KoreaDate\Exceptions\DateValidateException;
 class KoreaDate implements KoreaDateInterface
 {
     /**
+     * @var string $invertType
+     */
+    protected static string $invertType;
+
+    /**
      * @param $day string|\DateTime|\Carbon
      * @param $now null|string|\DateTime|\Carbon
      * @return string
@@ -60,25 +65,27 @@ class KoreaDate implements KoreaDateInterface
         $invert = $interval->invert;
 
         $invertType = $invert ? KoreaDateEnum::INVERT_TYPE_LATER : KoreaDateEnum::INVERT_TYPE_AGO;
+        self::setInvertType($invertType);
+
         $dateType = KoreaDateEnum::getDayOfType($interval);
         switch ($dateType) {
             case KoreaDateEnum::TYPE_TODAY:
                 return KoreaDateEnum::TODAY;
             case KoreaDateEnum::TYPE_MINUTE:
-                return $interval->i . self::getKoreaDateEnumNumberType(KoreaDateEnum::TYPE_MINUTE, $invertType);
+                return $interval->i . self::getEnumNumberType(KoreaDateEnum::TYPE_MINUTE);
             case KoreaDateEnum::TYPE_HOUR:
-                return $interval->h . self::getKoreaDateEnumNumberType(KoreaDateEnum::TYPE_HOUR, $invertType);
+                return $interval->h . self::getEnumNumberType(KoreaDateEnum::TYPE_HOUR);
             case KoreaDateEnum::TYPE_DAY:
                 if ((($days > 0 ? $days : $days * -1) > KoreaDateEnum::getTypeOfDaysCount($invertType)) && $days < 32) {
-                    return $days . self::getKoreaDateEnumNumberType(KoreaDateEnum::TYPE_DAY, $invertType);
+                    return $days . self::getEnumNumberType(KoreaDateEnum::TYPE_DAY);
                 }
 
                 return $invertType === KoreaDateEnum::INVERT_TYPE_AGO
                     ? KoreaDateEnum::DAYS_AGO[$days - 1] : KoreaDateEnum::DAYS_LATER[$days - 1];
             case KoreaDateEnum::TYPE_MONTH:
-                return $interval->m . self::getKoreaDateEnumNumberType(KoreaDateEnum::TYPE_MONTH, $invertType);
+                return $interval->m . self::getEnumNumberType(KoreaDateEnum::TYPE_MONTH);
             case KoreaDateEnum::TYPE_YEAR:
-                return $interval->y . self::getKoreaDateEnumNumberType(KoreaDateEnum::TYPE_YEAR, $invertType);
+                return $interval->y . self::getEnumNumberType(KoreaDateEnum::TYPE_YEAR);
             default:
                 throw new DateValidateException();
         }
@@ -86,14 +93,31 @@ class KoreaDate implements KoreaDateInterface
 
     /**
      * @param string $dateType
-     * @param string $invertType
      * @return string
      */
-    protected static function getKoreaDateEnumNumberType(string $dateType, string $invertType): string
+    protected static function getEnumNumberType(string $dateType): string
     {
+        $invertType = self::getInvertType();
         return constant(
             KoreaDateEnum::class . sprintf("::NUMBER_%s_%s", strtoupper($dateType), strtoupper($invertType))
         );
+    }
+
+    /**
+     * @param string $invertType
+     * @return void
+     */
+    protected static function setInvertType(string $invertType): void
+    {
+        self::$invertType = $invertType;
+    }
+
+    /**
+     * @return string
+     */
+    protected static function getInvertType(): string
+    {
+        return self::$invertType;
     }
 
     /**
