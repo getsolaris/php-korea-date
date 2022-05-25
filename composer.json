@@ -13,6 +13,9 @@
             "email": "im@getsolaris.kr"
         }
     ],
+    "require": {
+        "php": "^7.1|^8.0"
+    },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
     }
