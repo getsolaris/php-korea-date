@@ -81,20 +81,18 @@ abstract class KoreaDateEnum
     public static function getDayOfType(\DateInterval $interval): string
     {
         $days = $interval->days;
-        if (! $days && $interval->i && $interval->i >= 1 && $interval->i < 60) {
+        if (! $days && $interval->s) {
+            return self::TYPE_SECOND;
+        } elseif (! $days && $interval->i && $interval->i >= 1 && $interval->i < 60) {
             return self::TYPE_MINUTE;
         } elseif (! $days && $interval->h && $interval->h >= 1 && $interval->h < 24) {
             return self::TYPE_HOUR;
-        } elseif ($days < 32) {
-            if ($interval->s) {
-                return self::TYPE_SECOND;
-            }
-
-            return $days ? self::TYPE_DAY : self::TYPE_TODAY;
-        } elseif ($days <= 364) {
+        } elseif ($days && $days >= 32 && $days <= 364) {
             return self::TYPE_MONTH;
+        } elseif ($days && $days < 32) {
+            return self::TYPE_DAY;
+        } elseif (! $days) {
+            return self::TYPE_TODAY;
         }
-
-        return self::TYPE_YEAR;
     }
 }
