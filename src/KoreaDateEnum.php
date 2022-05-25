@@ -15,6 +15,7 @@ abstract class KoreaDateEnum
     ];
 
     public const TYPE_TODAY = 'today';
+    public const TYPE_SECOND = 'second';
     public const TYPE_MINUTE = 'minute';
     public const TYPE_HOUR = 'hour';
     public const TYPE_DAY = 'day';
@@ -35,6 +36,8 @@ abstract class KoreaDateEnum
     public const TWO_DAY_AGO = '그제';
     public const THREE_DAY_AGO = '엊그제';
 
+    public const NUMBER_SECOND_AGO = '초 전';
+    public const NUMBER_SECOND_LATER = '초 후';
     public const NUMBER_MINUTE_AGO = '분 전';
     public const NUMBER_MINUTE_LATER = '분 후';
     public const NUMBER_HOUR_AGO = '시간 전';
@@ -83,6 +86,10 @@ abstract class KoreaDateEnum
         } elseif (! $days && $interval->h && $interval->h >= 1 && $interval->h < 24) {
             return self::TYPE_HOUR;
         } elseif ($days < 32) {
+            if ($interval->s) {
+                return self::TYPE_SECOND;
+            }
+
             return $days ? self::TYPE_DAY : self::TYPE_TODAY;
         } elseif ($days <= 364) {
             return self::TYPE_MONTH;

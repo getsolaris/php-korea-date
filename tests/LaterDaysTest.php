@@ -12,12 +12,29 @@ class LaterDaysTest extends TestCase
      * @throws Exception
      * @throws DateValidateException
      */
+    public function test_n초후(): void
+    {
+        $randomSecond = random_int(1, 59);
+
+        $later = new DateTime();
+        $ago = date_create($randomSecond . ' seconds');
+
+        $result = KoreaDate::calc($ago, $later);
+
+        $this->assertEquals($randomSecond . KoreaDateEnum::NUMBER_SECOND_LATER, $result);
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     * @throws DateValidateException
+     */
     public function test_30분후(): void
     {
-        $ago = new DateTime('2022-05-21 16:30:00');
+        $later = new DateTime('2022-05-21 16:30:00');
         $now = new DateTime('2022-05-21 16:00:00');
 
-        $result = KoreaDate::calc($ago, $now);
+        $result = KoreaDate::calc($later, $now);
 
         $this->assertEquals('30' . KoreaDateEnum::NUMBER_MINUTE_LATER, $result);
     }

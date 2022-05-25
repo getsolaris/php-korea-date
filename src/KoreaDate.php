@@ -71,6 +71,8 @@ class KoreaDate implements KoreaDateInterface
         switch ($dateType) {
             case KoreaDateEnum::TYPE_TODAY:
                 return KoreaDateEnum::TODAY;
+            case KoreaDateEnum::TYPE_SECOND:
+                return $interval->s . self::getEnumNumberType(KoreaDateEnum::TYPE_SECOND);
             case KoreaDateEnum::TYPE_MINUTE:
                 return $interval->i . self::getEnumNumberType(KoreaDateEnum::TYPE_MINUTE);
             case KoreaDateEnum::TYPE_HOUR:

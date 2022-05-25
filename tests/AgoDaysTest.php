@@ -12,6 +12,23 @@ class AgoDaysTest extends TestCase
      * @throws Exception
      * @throws DateValidateException
      */
+    public function test_n초전(): void
+    {
+        $randomSecond = random_int(1, 59);
+
+        $now = new DateTime();
+        $ago = date_create($randomSecond . ' seconds ago');
+
+        $result = KoreaDate::calc($ago, $now);
+
+        $this->assertEquals($randomSecond . KoreaDateEnum::NUMBER_SECOND_AGO, $result);
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     * @throws DateValidateException
+     */
     public function test_30분전(): void
     {
         $ago = new DateTime('2022-05-21 15:30:00');
