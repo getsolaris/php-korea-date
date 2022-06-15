@@ -31,6 +31,22 @@ class KoreaDate implements KoreaDateInterface
     }
 
     /**
+     * @param $day string|\DateTime|\Carbon
+     * @param $now null|string|\DateTime|\Carbon
+     * @return array
+     * @throws DateValidateException
+     * @throws \Exception
+     */
+    public static function calcFromInterval($day, $now = null): array
+    {
+        $customDayEpoch = self::convertDateToEpochTimeStamp($day);
+        $nowEpoch = self::convertDateToEpochTimeStamp($now ?? date('Y-m-d H:i:s'));
+        $interval = self::epochDiff($customDayEpoch, $nowEpoch);
+
+        return self::getInterval($interval);
+    }
+
+    /**
      * @param int $e1
      * @param int $e2
      * @return \DateInterval
@@ -56,10 +72,10 @@ class KoreaDate implements KoreaDateInterface
 
     /**
      * @param \DateInterval $interval
-     * @return string
+     * @return array|GetIntervalResource
      * @throws DateValidateException
      */
-    protected static function getIntervalToDay(\DateInterval $interval): string
+    protected static function getInterval(\DateInterval $interval)
     {
         $days = $interval->days;
         $invert = $interval->invert;
@@ -69,28 +85,72 @@ class KoreaDate implements KoreaDateInterface
 
         $dateType = KoreaDateEnum::getDayOfType($interval);
         switch ($dateType) {
-            case KoreaDateEnum::TYPE_TODAY:
-                return KoreaDateEnum::TODAY;
             case KoreaDateEnum::TYPE_SECOND:
-                return $interval->s . self::getEnumNumberType(KoreaDateEnum::TYPE_SECOND);
+                $dateInterval = [
+                    't' => $interval->s,
+                    'code' => KoreaDateEnum::TYPE_SECOND,
+                ];
+                break;
             case KoreaDateEnum::TYPE_MINUTE:
-                return $interval->i . self::getEnumNumberType(KoreaDateEnum::TYPE_MINUTE);
+                $dateInterval = [
+                    't' => $interval->i,
+                    'code' => KoreaDateEnum::TYPE_MINUTE,
+                ];
+                break;
             case KoreaDateEnum::TYPE_HOUR:
-                return $interval->h . self::getEnumNumberType(KoreaDateEnum::TYPE_HOUR);
+                $dateInterval = [
+                    't' => $interval->h,
+                    'code' => KoreaDateEnum::TYPE_HOUR,
+                ];
+                break;
             case KoreaDateEnum::TYPE_DAY:
                 if ((($days > 0 ? $days : $days * -1) > KoreaDateEnum::getTypeOfDaysCount($invertType)) && $days < 32) {
-                    return $days . self::getEnumNumberType(KoreaDateEnum::TYPE_DAY);
+                    $dateInterval = [
+                        't' => $days,
+                        'code' => KoreaDateEnum::TYPE_DAY,
+                    ];
+                    break;
                 }
 
-                return $invertType === KoreaDateEnum::INVERT_TYPE_AGO
-                    ? KoreaDateEnum::DAYS_AGO[$days - 1] : KoreaDateEnum::DAYS_LATER[$days - 1];
+                $dateInterval = [
+                    't' => $days - 1,
+                    'code' => KoreaDateEnum::TYPE_DAYS[$days - 1],
+                ];
+                break;
             case KoreaDateEnum::TYPE_MONTH:
-                return $interval->m . self::getEnumNumberType(KoreaDateEnum::TYPE_MONTH);
+                $dateInterval = [
+                    't' => $interval->m,
+                    'code' => KoreaDateEnum::TYPE_MONTH,
+                ];
+                break;
             case KoreaDateEnum::TYPE_YEAR:
-                return $interval->y . self::getEnumNumberType(KoreaDateEnum::TYPE_YEAR);
+                $dateInterval = [
+                    't' => $interval->y,
+                    'code' => KoreaDateEnum::TYPE_YEAR,
+                ];
+                break;
             default:
                 throw new DateValidateException();
         }
+
+        $dateInterval['type'] = self::$invertType;
+        return GetIntervalResource::toArray($dateInterval);
+    }
+
+    /**
+     * @param \DateInterval $interval
+     * @return string
+     * @throws DateValidateException
+     */
+    protected static function getIntervalToDay(\DateInterval $interval): string
+    {
+        $interval = self::getInterval($interval);
+
+        return (in_array(
+                $interval['code'],
+                KoreaDateEnum::TYPE_DAYS,
+                true
+            ) ? '' : $interval['value']) . self::getEnumNumberType($interval['code']);
     }
 
     /**

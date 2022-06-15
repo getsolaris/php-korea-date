@@ -66,7 +66,7 @@ class LaterDaysTest extends TestCase
 
         $result = KoreaDate::calc($later, $now);
 
-        $this->assertEquals(KoreaDateEnum::ONE_DAY_LATER, $result);
+        $this->assertEquals(KoreaDateEnum::NUMBER_ONE_DAY_LATER, $result);
     }
 
     /**
@@ -81,7 +81,7 @@ class LaterDaysTest extends TestCase
 
         $result = KoreaDate::calc($later, $now);
 
-        $this->assertEquals(KoreaDateEnum::TWO_DAY_LATER, $result);
+        $this->assertEquals(KoreaDateEnum::NUMBER_TWO_DAY_LATER, $result);
     }
 
     /**
@@ -96,7 +96,7 @@ class LaterDaysTest extends TestCase
 
         $result = KoreaDate::calc($later, $now);
 
-        $this->assertEquals(KoreaDateEnum::THREE_DAY_LATER, $result);
+        $this->assertEquals(KoreaDateEnum::NUMBER_THREE_DAY_LATER, $result);
     }
 
     /**

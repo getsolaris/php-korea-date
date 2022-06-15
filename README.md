@@ -45,14 +45,28 @@ composer require getsolaris/korea-date
   - DateTime
   - Carbon
 - 두번째 파라미터: 현재 (optional)
+- 
+### calcFromInterval()
+- 첫번째 파라미터: 변화 날짜 (과거, 현재, 미래)
+  - strtotime
+  - DateTime
+  - Carbon
+- 두번째 파라미터: 현재 (optional)
 
 ```php 
 <?php 
 
 $agoDate = new DateTime('2022-02-20');
 $diffMessage = KoreaDate::calc($agoDate, '2022-05-20');
+$diffArray = KoreaDate::calcFromInterval($agoDate, '2022-05-20');
 
 echo $diffMessage; // 3달 전
+
+$diffArray = [
+  'value' => 3,
+  'code' => 'month',
+  'type' => 'ago',
+]
 ```
 
 ## 사용법

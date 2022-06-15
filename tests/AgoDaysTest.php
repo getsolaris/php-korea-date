@@ -20,8 +20,14 @@ class AgoDaysTest extends TestCase
         $ago = date_create($randomSecond . ' seconds ago');
 
         $result = KoreaDate::calc($ago, $now);
-
         $this->assertEquals($randomSecond . KoreaDateEnum::NUMBER_SECOND_AGO, $result);
+
+        $result = KoreaDate::calcFromInterval($ago, $now);
+        $this->assertEquals([
+            'value' => $randomSecond,
+            'code' => KoreaDateEnum::TYPE_SECOND,
+            'type' => KoreaDateEnum::INVERT_TYPE_AGO,
+        ], $result);
     }
 
     /**
@@ -35,8 +41,14 @@ class AgoDaysTest extends TestCase
         $now = new DateTime('2022-05-21 16:00:00');
 
         $result = KoreaDate::calc($ago, $now);
-
         $this->assertEquals('30' . KoreaDateEnum::NUMBER_MINUTE_AGO, $result);
+
+        $result = KoreaDate::calcFromInterval($ago, $now);
+        $this->assertEquals([
+            'value' => 30,
+            'code' => KoreaDateEnum::TYPE_MINUTE,
+            'type' => KoreaDateEnum::INVERT_TYPE_AGO,
+        ], $result);
     }
 
     /**
@@ -50,8 +62,14 @@ class AgoDaysTest extends TestCase
         $now = new DateTime('2022-05-21 17:00:00');
 
         $result = KoreaDate::calc($ago, $now);
-
         $this->assertEquals('2' . KoreaDateEnum::NUMBER_HOUR_AGO, $result);
+
+        $result = KoreaDate::calcFromInterval($ago, $now);
+        $this->assertEquals([
+            'value' => 2,
+            'code' => KoreaDateEnum::TYPE_HOUR,
+            'type' => KoreaDateEnum::INVERT_TYPE_AGO,
+        ], $result);
     }
 
     /**
@@ -66,7 +84,7 @@ class AgoDaysTest extends TestCase
 
         $result = KoreaDate::calc($ago, $now);
 
-        $this->assertEquals(KoreaDateEnum::ONE_DAY_AGO, $result);
+        $this->assertEquals(KoreaDateEnum::NUMBER_ONE_DAY_AGO, $result);
     }
 
     /**
@@ -81,7 +99,7 @@ class AgoDaysTest extends TestCase
 
         $result = KoreaDate::calc($ago, $now);
 
-        $this->assertEquals(KoreaDateEnum::TWO_DAY_AGO, $result);
+        $this->assertEquals(KoreaDateEnum::NUMBER_TWO_DAY_AGO, $result);
     }
 
     /**
@@ -96,7 +114,7 @@ class AgoDaysTest extends TestCase
 
         $result = KoreaDate::calc($ago, $now);
 
-        $this->assertEquals(KoreaDateEnum::THREE_DAY_AGO, $result);
+        $this->assertEquals(KoreaDateEnum::NUMBER_THREE_DAY_AGO, $result);
     }
 
     /**
@@ -111,6 +129,13 @@ class AgoDaysTest extends TestCase
 
         $result = KoreaDate::calc($ago, $now);
         $this->assertEquals('11' . KoreaDateEnum::NUMBER_DAY_AGO, $result);
+
+        $result = KoreaDate::calcFromInterval($ago, $now);
+        $this->assertEquals([
+            'value' => 11,
+            'code' => KoreaDateEnum::TYPE_DAY,
+            'type' => KoreaDateEnum::INVERT_TYPE_AGO,
+        ], $result);
     }
 
     /**
@@ -127,6 +152,13 @@ class AgoDaysTest extends TestCase
 
         $result = KoreaDate::calc($ago, $now);
         $this->assertEquals($randomDay . KoreaDateEnum::NUMBER_DAY_AGO, $result);
+
+        $result = KoreaDate::calcFromInterval($ago, $now);
+        $this->assertEquals([
+            'value' => $randomDay,
+            'code' => KoreaDateEnum::TYPE_DAY,
+            'type' => KoreaDateEnum::INVERT_TYPE_AGO,
+        ], $result);
     }
 
     /**
@@ -140,8 +172,14 @@ class AgoDaysTest extends TestCase
         $now = new DateTime('2022-05-18');
 
         $result = KoreaDate::calc($ago, $now);
-
         $this->assertEquals('1' . KoreaDateEnum::NUMBER_MONTH_AGO, $result);
+
+        $result = KoreaDate::calcFromInterval($ago, $now);
+        $this->assertEquals([
+            'value' => 1,
+            'code' => KoreaDateEnum::TYPE_MONTH,
+            'type' => KoreaDateEnum::INVERT_TYPE_AGO,
+        ], $result);
     }
 
     /**
@@ -157,8 +195,14 @@ class AgoDaysTest extends TestCase
         $ago = date_create($randomMonth . ' months ago');
 
         $result = KoreaDate::calc($ago, $now);
-
         $this->assertEquals($randomMonth . KoreaDateEnum::NUMBER_MONTH_AGO, $result);
+
+        $result = KoreaDate::calcFromInterval($ago, $now);
+        $this->assertEquals([
+            'value' => $randomMonth,
+            'code' => KoreaDateEnum::TYPE_MONTH,
+            'type' => KoreaDateEnum::INVERT_TYPE_AGO,
+        ], $result);
     }
 
     /**
@@ -170,11 +214,19 @@ class AgoDaysTest extends TestCase
     {
         $randomYear = random_int(1, 50);
 
-        $now = new DateTime();
+        $now = new DateTime('2022-06-15 12:31:10');
         $ago = date_create($randomYear . ' years ago');
 
-        $result = KoreaDate::calc($ago, $now);
+        $randomYear--;
 
+        $result = KoreaDate::calc($ago, $now);
         $this->assertEquals($randomYear . KoreaDateEnum::NUMBER_YEAR_AGO, $result);
+
+        $result = KoreaDate::calcFromInterval($ago, $now);
+        $this->assertEquals([
+            'value' => $randomYear,
+            'code' => KoreaDateEnum::TYPE_YEAR,
+            'type' => KoreaDateEnum::INVERT_TYPE_AGO,
+        ], $result);
     }
 }
