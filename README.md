@@ -1,7 +1,6 @@
 ## PHP Korea Date Calc
 
 <p align="center">
-<a href="https://packagist.org/packages/getsolaris/korea-date"><img src="https://poser.pugx.org/getsolaris/korea-date/d/total.svg" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/getsolaris/korea-date"><img src="https://poser.pugx.org/getsolaris/korea-date/v/stable.svg" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/getsolaris/korea-date"><img src="https://poser.pugx.org/getsolaris/korea-date/license.svg" alt="License"></a>
 </p>
